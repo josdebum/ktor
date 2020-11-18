@@ -18,6 +18,8 @@ enableFeaturePreview('GRADLE_METADATA')
 
 ext.native_targets_enabled = properties['disable_native_targets'] == null
 
+apply from: file('gradle/versions.gradle')
+
 include ':ktor-server:ktor-server-core'
 include ':ktor-server:ktor-server-tests'
 include ':ktor-server:ktor-server-host-common'
@@ -43,7 +45,9 @@ if (native_targets_enabled) {
 }
 include ':ktor-client:ktor-client-curl'
 include ':ktor-client:ktor-client-ios'
-include ':ktor-client:ktor-client-java'
+if (ext.currentJdk >= 11) {
+    include ':ktor-client:ktor-client-java'
+}
 include ':ktor-client:ktor-client-jetty'
 include ':ktor-client:ktor-client-js'
 include ':ktor-client:ktor-client-mock'
@@ -60,6 +64,10 @@ include ':ktor-client:ktor-client-features:ktor-client-auth-basic'
 include ':ktor-client:ktor-client-features:ktor-client-logging'
 include ':ktor-client:ktor-client-features:ktor-client-encoding'
 include ':ktor-client:ktor-client-features:ktor-client-websockets'
+/*
+ * Copyright 2014-2020 JetBrains s.r.o and contributors. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 //include ':ktor-client:ktor-client-features:ktor-client-tracing'
 //include ':ktor-client:ktor-client-features:ktor-client-tracing:ktor-client-tracing-stetho'
 include ':ktor-features:ktor-freemarker'
